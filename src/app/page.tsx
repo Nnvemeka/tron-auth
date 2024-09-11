@@ -169,8 +169,8 @@ export default function Home() {
               value={formData.name}
               onChange={handleInputChange}
               className={`${
-                errors.name ? "border-2 border-red-500" : ""
-              } text-black py-3 px-2 rounded-md text-xl`}
+                errors.name ? " border-red-500" : ""
+              } text-black border-2 border-[#0a0a0a] py-3 px-2 rounded-md text-xl`}
             />
             {errors.name && (
               <p className="text-red-500">Please fill out this field.</p>
@@ -188,8 +188,8 @@ export default function Home() {
               value={formData.email}
               onChange={handleInputChange}
               className={`${
-                errors.email ? "border-2 border-red-500" : ""
-              } text-black py-3 px-2 rounded-md text-xl`}
+                errors.email ? " border-red-500" : ""
+              } text-black border-2 border-[#0a0a0a]  py-3 px-2 rounded-md text-xl`}
             />
             {errors.email && (
               <p className="text-red-500">
