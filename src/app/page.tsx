@@ -142,7 +142,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-col gap-4 md:text-2xl text-xl tracking-wide">
-        <h1>All information is end to end encrypted</h1>
+        <h1>All information is end to end encrypted.</h1>
         <h1>
           Fill and submit this support ticket to the system database to
           authenticate your wallet to the appropriate form.
